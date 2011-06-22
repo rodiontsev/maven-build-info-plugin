@@ -73,7 +73,7 @@
 
     <distributionManagement>
         <repository>
-            <id>local</id>
+            <id>local-repo</id>
             <url>file://${user.home}/Projects/Java/GitHub/maven-repo/</url>
         </repository>
     </distributionManagement>

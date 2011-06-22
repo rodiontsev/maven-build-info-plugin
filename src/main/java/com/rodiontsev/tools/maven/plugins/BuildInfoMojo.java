@@ -1,7 +1,6 @@
 package com.rodiontsev.tools.maven.plugins;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -9,7 +8,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import java.io.*;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * Date: 13.05.2011
@@ -37,22 +39,16 @@ public class BuildInfoMojo extends AbstractMojo {
     private List<String> systemProperties;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        Date date = new Date();
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put("project.name", project.getName());
-        map.put("project.version", project.getVersion());
-        map.put("build.time", DateFormatUtils.format(date, "d MMMM yyyy, HH:mm:ss ZZ"));
+
+        for (InfoProvider infoProvider : ServiceLoader.load(InfoProvider.class)) {
+            map.putAll(infoProvider.getInfo(project));
+        }
 
         if (systemProperties != null) {
             for (String property : systemProperties) {
                 map.put(property, System.getProperty(property, DEF));
             }
-        }
-
-        Iterator<InfoProvider> it = ServiceLoader.load(InfoProvider.class).iterator();
-        if (it.hasNext()) {
-            InfoProvider infoProvider = it.next();
-            map.putAll(infoProvider.getInfo(project));
         }
 
         Build build = project.getBuild();

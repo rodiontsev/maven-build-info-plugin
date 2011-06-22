@@ -35,7 +35,9 @@ public class MercurialInfoProvider implements InfoProvider {
                     project.getBasedir(),
                     new String[]{HgCommandConstants.REVNO_CMD, "-n", "-i", "-b"});
         } catch (ScmException e) {
-            logger.error(e.getMessage());
+            if (logger.isErrorEnabled()) {
+                logger.error(e.getMessage());
+            }
         }
 
         Map<String, String> info = new LinkedHashMap<String, String>();
