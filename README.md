@@ -7,7 +7,7 @@ This plugin generates the *build.info* file, which contains
 - source revision (for Mercurial only)
 - different system properties: java.vm.vendor, java.vm.version, os.name, os.version, etc.
 
-This file might be packed into the *war* or the *ear* file, so you can see if you deal with the new or an outdated version deploed on the server.
+This file might be packed into the war or the ear file, so you can see if you deal with the new or an outdated version deploed on the server.
 
 
 Usage
@@ -24,7 +24,7 @@ To use this plugin you should add it in your pom.xml
     <build>
         <finalName>war</finalName>
         <plugins>
-	    <!-- Pack generated build.info into the war file -->
+            <!-- Pack generated build.info into the war file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -41,10 +41,10 @@ To use this plugin you should add it in your pom.xml
                 </configuration>
             </plugin>
 
-	    <!-- Generate build.info -->
+            <!-- Generate build.info -->
             <plugin>
-                <groupId>*com.rodiontsev.tools.maven.plugins*</groupId>
-                <artifactId>*build-info*</artifactId>
+                <groupId>com.rodiontsev.tools.maven.plugins</groupId>
+                <artifactId>build-info</artifactId>
                 <version>1.1</version>
                 <configuration>
                     <systemProperties>
