@@ -5,7 +5,7 @@
     <name>maven-build-info-plugin</name>
     <groupId>com.rodiontsev.tools.maven.plugins</groupId>
     <artifactId>build-info</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>maven-plugin</packaging>
 
     <properties>
