@@ -15,6 +15,10 @@ import java.util.Map;
  */
 public class ProjectInfoProvider implements InfoProvider {
 
+    public boolean isActive(MavenProject project) {
+        return true;
+    }
+
     public Map<String, String> getInfo(MavenProject project) {
         Date date = new Date();
         Map<String, String> info = new LinkedHashMap<String, String>();

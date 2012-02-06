@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
  */
 public class BuildInfoMojo extends AbstractMojo {
     private static final String BUILD_INFO_FILE_NAME = "build.info";
-    private static final String DEF = "";
+    private static final String DEFAULT_VALUE = "";
 
     /**
      * @parameter default-value="${project}"
@@ -41,13 +41,15 @@ public class BuildInfoMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         Map<String, String> map = new LinkedHashMap<String, String>();
 
-        for (InfoProvider infoProvider : ServiceLoader.load(InfoProvider.class)) {
-            map.putAll(infoProvider.getInfo(project));
+        for (InfoProvider provider : ServiceLoader.load(InfoProvider.class)) {
+            if (provider.isActive(project)) {
+                map.putAll(provider.getInfo(project));
+            }
         }
 
         if (systemProperties != null) {
             for (String property : systemProperties) {
-                map.put(property, System.getProperty(property, DEF));
+                map.put(property, System.getProperty(property, DEFAULT_VALUE));
             }
         }
 

@@ -1,2 +1,3 @@
 com.rodiontsev.tools.maven.plugins.ProjectInfoProvider
 com.rodiontsev.tools.maven.plugins.MercurialInfoProvider
+com.rodiontsev.tools.maven.plugins.GitInfoProvider

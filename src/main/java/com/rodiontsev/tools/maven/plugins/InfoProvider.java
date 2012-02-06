@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public interface InfoProvider {
 
+    boolean isActive(MavenProject project);
+
     Map<String, String> getInfo(MavenProject project);
 
 }
