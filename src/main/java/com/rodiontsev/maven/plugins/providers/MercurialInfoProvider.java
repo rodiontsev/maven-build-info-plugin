@@ -1,5 +1,6 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins.providers;
 
+import com.rodiontsev.maven.plugins.BuildInfoMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmResult;
@@ -21,6 +22,25 @@ import java.util.regex.Pattern;
  * @author <a href="http://www.rodiontsev.com">Dmitry Rodiontsev</a>
  */
 public class MercurialInfoProvider extends AbstractInfoProvider {
+
+    private class HgLogConsumer extends HgConsumer {
+        private final StringBuilder out = new StringBuilder();
+
+        public HgLogConsumer(ScmLogger logger) {
+            super(logger);
+        }
+
+        @Override
+        public void consumeLine(String line) {
+            out.append(line).append("\n");
+        }
+
+        @Override
+        public String getStdErr() {
+            return out.toString();
+        }
+    }
+
     private static final String DOT_HG = ".hg";
     private static final Pattern HG_OUTPUT_PATTERN = Pattern.compile("^(\\S+)\\s(\\S+)\\s(.+)$");
 
@@ -28,7 +48,7 @@ public class MercurialInfoProvider extends AbstractInfoProvider {
         return isActive(project, DOT_HG);
     }
 
-    public Map<String, String> getInfo(MavenProject project) {
+    public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
         ScmLogger logger = new DefaultLog();
         HgLogConsumer consumer = new HgLogConsumer(logger);
         ScmResult result = null;
@@ -64,23 +84,5 @@ public class MercurialInfoProvider extends AbstractInfoProvider {
             }
         }
         return info;
-    }
-}
-
-class HgLogConsumer extends HgConsumer {
-    private final StringBuilder out = new StringBuilder();
-
-    public HgLogConsumer(ScmLogger logger) {
-        super(logger);
-    }
-
-    @Override
-    public void consumeLine(String line) {
-        out.append(line).append("\n");
-    }
-
-    @Override
-    public String getStdErr() {
-        return out.toString();
     }
 }

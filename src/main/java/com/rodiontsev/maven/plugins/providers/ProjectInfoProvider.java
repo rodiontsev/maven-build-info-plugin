@@ -1,10 +1,13 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins.providers;
 
+import com.rodiontsev.maven.plugins.BuildInfoMojo;
+import com.rodiontsev.maven.plugins.InfoProvider;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.maven.project.MavenProject;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -19,12 +22,11 @@ public class ProjectInfoProvider implements InfoProvider {
         return true;
     }
 
-    public Map<String, String> getInfo(MavenProject project) {
-        Date date = new Date();
+    public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
         Map<String, String> info = new LinkedHashMap<String, String>();
         info.put("project.name", project.getName());
         info.put("project.version", project.getVersion());
-        info.put("build.time", DateFormatUtils.format(date, "d MMMM yyyy, HH:mm:ss ZZ"));
+        info.put("build.time", DateFormatUtils.format(new Date(), "d MMMM yyyy, HH:mm:ss ZZ", Locale.ENGLISH));
         return info;
     }
 

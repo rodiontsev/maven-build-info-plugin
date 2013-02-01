@@ -1,5 +1,6 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins.providers;
 
+import com.rodiontsev.maven.plugins.InfoProvider;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;

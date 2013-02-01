@@ -1,4 +1,4 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins;
 
 import org.apache.maven.project.MavenProject;
 
@@ -14,6 +14,6 @@ public interface InfoProvider {
 
     boolean isActive(MavenProject project);
 
-    Map<String, String> getInfo(MavenProject project);
+    Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo);
 
 }

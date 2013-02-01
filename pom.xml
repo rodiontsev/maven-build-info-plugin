@@ -2,11 +2,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>maven-build-info-plugin</name>
-    <groupId>com.rodiontsev.tools.maven.plugins</groupId>
-    <artifactId>build-info</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <groupId>com.rodiontsev.maven.plugins</groupId>
+    <artifactId>maven-build-info-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+
+    <name>maven-build-info-plugin</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +46,7 @@
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-hg</artifactId>
-            <version>1.6</version>
+            <version>1.8.1</version>
         </dependency>
 
         <!-- Git -->
@@ -59,6 +60,19 @@
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
             <version>1.6</version>
+        </dependency>
+
+        <!-- Svn -->
+        <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-svn-commons</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-svnexe</artifactId>
+            <version>1.8.1</version>
         </dependency>
 
         <dependency>

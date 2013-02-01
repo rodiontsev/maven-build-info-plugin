@@ -1,5 +1,6 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins.providers;
 
+import com.rodiontsev.maven.plugins.BuildInfoMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
@@ -32,7 +33,7 @@ public class GitInfoProvider extends AbstractInfoProvider {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, String> getInfo(MavenProject project) {
+    public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
         File basedir = project.getBasedir();
 
         InfoScmResult result = null;

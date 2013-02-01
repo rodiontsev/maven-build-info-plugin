@@ -1,7 +1,6 @@
-package com.rodiontsev.tools.maven.plugins;
+package com.rodiontsev.maven.plugins;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.maven.model.Build;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -23,8 +22,7 @@ import java.util.ServiceLoader;
  * @phase prepare-package
  */
 public class BuildInfoMojo extends AbstractMojo {
-    private static final String BUILD_INFO_FILE_NAME = "build.info";
-    private static final String DEFAULT_VALUE = "";
+    private static final String DEFAULT_BUILD_INFO_FILENAME = "build.info";
 
     /**
      * @parameter default-value="${project}"
@@ -38,30 +36,28 @@ public class BuildInfoMojo extends AbstractMojo {
      */
     private List<String> systemProperties;
 
+    /**
+     * @parameter
+     */
+    private String filename;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         Map<String, String> map = new LinkedHashMap<String, String>();
 
         for (InfoProvider provider : ServiceLoader.load(InfoProvider.class)) {
             if (provider.isActive(project)) {
-                map.putAll(provider.getInfo(project));
+                map.putAll(provider.getInfo(project, this));
             }
         }
 
-        if (systemProperties != null) {
-            for (String property : systemProperties) {
-                map.put(property, System.getProperty(property, DEFAULT_VALUE));
-            }
-        }
+        String filename = project.getBuild().getDirectory()
+                + File.separator + (this.filename != null ? this.filename : DEFAULT_BUILD_INFO_FILENAME);
 
-        Build build = project.getBuild();
-        StringBuilder filename = new StringBuilder();
-        filename.append(build.getDirectory()).append(File.separator).append(BUILD_INFO_FILE_NAME);
-
-        getLog().info("Writing to file " + filename.toString());
+        getLog().info("Writing to the file " + filename);
 
         Writer out = null;
         try {
-            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename.toString()), "UTF-8"));
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8"));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 out.write(entry.getKey());
                 out.write(" = ");
@@ -74,6 +70,10 @@ public class BuildInfoMojo extends AbstractMojo {
         } finally {
             IOUtils.closeQuietly(out);
         }
+    }
+
+    public List<String> getSystemProperties() {
+        return systemProperties;
     }
 
 }
