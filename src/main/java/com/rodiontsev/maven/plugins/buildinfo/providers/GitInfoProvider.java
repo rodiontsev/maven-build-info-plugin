@@ -1,6 +1,20 @@
-package com.rodiontsev.maven.plugins.providers;
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import com.rodiontsev.maven.plugins.BuildInfoMojo;
+package com.rodiontsev.maven.plugins.buildinfo.providers;
+
+import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
@@ -20,33 +34,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * InfoProvider for Git.
+ *
  * Date: 2/6/12
  * Time: 4:58 AM
  *
  * @author <a href="http://www.rodiontsev.com">Dmitry Rodiontsev</a>
  */
-public class GitInfoProvider extends AbstractInfoProvider {
+public class GitInfoProvider extends AbstractVcsInfoProvider {
     private static final String DOT_GIT = ".git";
 
-    public boolean isActive(MavenProject project) {
-        return isActive(project, DOT_GIT);
+    @Override
+    protected boolean isActive(MavenProject project, BuildInfoMojo mojo) {
+        return isDirectoryExists(project, DOT_GIT);
     }
 
-    @SuppressWarnings("unchecked")
-    public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
+    @Override
+    protected Map<String, String> getScmInfo(MavenProject project, BuildInfoMojo mojo) {
         File basedir = project.getBasedir();
 
-        InfoScmResult result = null;
-
         ScmLogger logger = new DefaultLog();
+        ScmFileSet fileSet = new ScmFileSet(basedir);
 
-        GitCommand command = new GitExeScmProvider().getInfoCommand();
-        command.setLogger(logger);
+        GitCommand infoCommand = new GitExeScmProvider().getInfoCommand();
+        infoCommand.setLogger(logger);
+
+        InfoScmResult infoResult = null;
         try {
             ScmProviderRepository repository = new GitScmProviderRepository(basedir.getAbsolutePath());
-            ScmFileSet fileSet = new ScmFileSet(basedir);
             CommandParameters parameters = new CommandParameters();
-            result = (InfoScmResult) command.execute(repository, fileSet, parameters);
+
+            infoResult = (InfoScmResult) infoCommand.execute(repository, fileSet, parameters);
         } catch (ScmException e) {
             if (logger.isErrorEnabled()) {
                 logger.error(e.getMessage());
@@ -54,19 +72,20 @@ public class GitInfoProvider extends AbstractInfoProvider {
         }
 
         Map<String, String> info = new LinkedHashMap<String, String>();
-        if (result != null) {
-            if (result.isSuccess()) {
-                List<InfoItem> items = result.getInfoItems();
+
+        if (infoResult != null) {
+            if (infoResult.isSuccess()) {
+                List<InfoItem> items = infoResult.getInfoItems();
                 if ((items != null) && (items.size() == 1)) {
                     info.put("git.revision", items.get(0).getRevision());
                 } else {
                     info.put("git.error", "The command returned incorrect number of arguments");
                 }
             } else {
-                info.put("git.error", result.getProviderMessage());
+                info.put("git.error", infoResult.getProviderMessage());
             }
-
         }
+
         return info;
     }
 

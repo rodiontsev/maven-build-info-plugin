@@ -1,13 +1,13 @@
 Maven Build Info Plugin
 =======================
 
-This plugin generates the build.info file which might contain
+This plugin generates the build-info file which might contain
 - build date
 - build version
 - source revision (Git, Mercurial or Subversion)
-- system properties (java.vm.vendor, java.vm.version, os.name, os.version, etc.)
+- system properties (user.name, java.vm.vendor, java.vm.version, java.vm.name, os.name, os.version, os.arch, etc.)
 
-If you include this file in the WAR or EAR file, you will not waste your time trying to figure out a version that has been deployed to a server.
+If you include this file in the WAR or EAR file, you will not waste your time trying to figure out a version that is deployed to a server.
 
 
 Usage

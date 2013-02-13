@@ -2,12 +2,43 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>com.rodiontsev.maven.plugins</groupId>
     <artifactId>maven-build-info-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <name>maven-build-info-plugin</name>
+    <name>Maven Build Info Plugin</name>
+    <description>The Build Info Plugin is used to generate info about the current build</description>
+
+    <url>https://github.com/rodiontsev/maven-build-info-plugin</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>rodiontsev</id>
+            <name>Dmitry Rodiontsev</name>
+            <email>dmitry@rodiontsev.com</email>
+            <timezone>GMT+3</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>git@github.com:rodiontsev/maven-build-info-plugin.git</url>
+        <connection>scm:git:git@github.com:rodiontsev/maven-build-info-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:rodiontsev/maven-build-info-plugin.git</developerConnection>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -100,18 +131,5 @@
              </resource>
          </resources>
     </build>
-
-    <scm>
-        <url>git@ssh.github.com/rodiontsev/maven-build-info-plugin.git</url>
-        <connection>scm:git:https://github.com/rodiontsev/maven-build-info-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@ssh.github.com/rodiontsev/maven-build-info-plugin.git</developerConnection>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>local-repo</id>
-            <url>file://${user.home}/projects/java/github/maven-repo/</url>
-        </repository>
-    </distributionManagement>
 
 </project>

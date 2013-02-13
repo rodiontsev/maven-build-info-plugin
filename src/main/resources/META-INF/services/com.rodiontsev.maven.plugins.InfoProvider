@@ -1,5 +1,0 @@
-com.rodiontsev.maven.plugins.providers.ProjectInfoProvider
-com.rodiontsev.maven.plugins.providers.SystemPropertiesProvider
-com.rodiontsev.maven.plugins.providers.GitInfoProvider
-com.rodiontsev.maven.plugins.providers.MercurialInfoProvider
-com.rodiontsev.maven.plugins.providers.SubversionInfoProvider

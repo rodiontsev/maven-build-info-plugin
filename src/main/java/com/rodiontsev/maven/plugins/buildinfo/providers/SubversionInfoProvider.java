@@ -1,14 +1,26 @@
-package com.rodiontsev.maven.plugins.providers;
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import com.rodiontsev.maven.plugins.BuildInfoMojo;
+package com.rodiontsev.maven.plugins.buildinfo.providers;
+
+import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.CommandParameters;
 import org.apache.maven.scm.ScmException;
-import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
 import org.apache.maven.scm.command.info.InfoItem;
 import org.apache.maven.scm.command.info.InfoScmResult;
-import org.apache.maven.scm.command.status.StatusScmResult;
 import org.apache.maven.scm.log.DefaultLog;
 import org.apache.maven.scm.log.ScmLogger;
 import org.apache.maven.scm.provider.ScmProviderRepository;
@@ -22,42 +34,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Date: 28.01.13
- * Time: 17:37
+ * InfoProvider for Subversion.
+ *
+ * Date: 1/28/13
+ * Time: 5:37 PM
  *
  * @author <a href="http://www.rodiontsev.com">Dmitry Rodiontsev</a>
  */
-public class SubversionInfoProvider extends AbstractInfoProvider {
+public class SubversionInfoProvider extends AbstractVcsInfoProvider {
     private static final String DOT_SVN = ".svn";
 
-    public boolean isActive(MavenProject project) {
-        return isActive(project, DOT_SVN);
+    @Override
+    protected boolean isActive(MavenProject project, BuildInfoMojo mojo) {
+        return isDirectoryExists(project, DOT_SVN);
     }
 
-    public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
-        ScmLogger logger = new DefaultLog();
-
+    @Override
+    protected Map<String, String> getScmInfo(MavenProject project, BuildInfoMojo mojo) {
         File basedir = project.getBasedir();
-        ScmFileSet fileSet = new ScmFileSet(basedir);
 
-        ScmProviderRepository repository = new SvnScmProviderRepository(basedir.getAbsolutePath());
-        CommandParameters parameters = new CommandParameters();
+        ScmLogger logger = new DefaultLog();
+        ScmFileSet fileSet = new ScmFileSet(basedir);
 
         SvnCommand infoCommand = new SvnExeScmProvider().getInfoCommand();
         infoCommand.setLogger(logger);
 
         InfoScmResult infoResult = null;
         try {
-            infoResult = (InfoScmResult) infoCommand.execute(repository, fileSet, parameters);
-        } catch (ScmException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error(e.getMessage());
-            }
-        }
+            ScmProviderRepository repository = new SvnScmProviderRepository(basedir.getAbsolutePath());
+            CommandParameters parameters = new CommandParameters();
 
-        StatusScmResult statusResult = null;
-        try {
-            statusResult = new SvnExeScmProvider().status(repository, fileSet, parameters);
+            infoResult = (InfoScmResult) infoCommand.execute(repository, fileSet, parameters);
         } catch (ScmException e) {
             if (logger.isErrorEnabled()) {
                 logger.error(e.getMessage());
@@ -69,7 +76,8 @@ public class SubversionInfoProvider extends AbstractInfoProvider {
         if (infoResult != null) {
             if (infoResult.isSuccess()) {
                 List<InfoItem> items = infoResult.getInfoItems();
-                for (InfoItem item : items) {
+                if ((items != null) && (items.size() == 1)) {
+                    InfoItem item = items.get(0);
                     info.put("svn.url", item.getURL());
                     info.put("svn.revision", item.getRevision());
                     info.put("svn.last.changed.author", item.getLastChangedAuthor());
@@ -78,21 +86,6 @@ public class SubversionInfoProvider extends AbstractInfoProvider {
                 }
             } else {
                 info.put("svn.info.error", infoResult.getProviderMessage());
-            }
-        }
-
-        if (statusResult != null) {
-            if (statusResult.isSuccess()) {
-                List<ScmFile> files = statusResult.getChangedFiles();
-                if (!files.isEmpty()) {
-                    info.put("# The status of working copy files and directories", "");
-
-                    for (ScmFile file : files) {
-                        info.put("# " + file.getPath(), file.getStatus().toString());
-                    }
-                }
-            } else {
-                info.put("svn.status.error", statusResult.getProviderMessage());
             }
         }
 
