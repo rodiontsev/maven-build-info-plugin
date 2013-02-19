@@ -75,5 +75,3 @@ To use this plugin you should add it in your pom.xml
     ...
 
 </project>
-
-
