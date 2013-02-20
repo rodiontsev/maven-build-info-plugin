@@ -1,20 +1,19 @@
 Maven Build Info Plugin
 =======================
 
-This plugin generates the build-info file which might contain
+This plugin generates the build-info file which might contain:
 - build date
 - build version
 - source revision (Git, Mercurial or Subversion)
 - system properties (user.name, java.vm.vendor, java.vm.version, java.vm.name, os.name, os.version, os.arch, etc.)
 
-If you include this file in the WAR or EAR file, you will not waste your time trying to figure out a version that is deployed to a server.
-
+If you include this file in the WAR or EAR file, you will not waste time trying to figure out an application's version that is deployed to a server.
 
 Usage
 -----
 To use this plugin you should add it in your pom.xml
 
-
+```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -28,7 +27,7 @@ To use this plugin you should add it in your pom.xml
             <plugin>
                 <groupId>com.rodiontsev.maven.plugins</groupId>
                 <artifactId>maven-build-info-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
                 <configuration>
                     <filename>build.info</filename>
                     <systemProperties>
@@ -42,6 +41,7 @@ To use this plugin you should add it in your pom.xml
                         <systemProperty>os.version</systemProperty>
                         <systemProperty>os.arch</systemProperty>
                     </systemProperties>
+                    <includeVcsInfo>true</includeVcsInfo>
                 </configuration>
                 <executions>
                     <execution>
@@ -75,3 +75,6 @@ To use this plugin you should add it in your pom.xml
     ...
 
 </project>
+```
+
+The Maven Build Info Plugin is deployed into [Maven Central](http://repo1.maven.org/maven2/com/rodiontsev/maven/plugins/maven-build-info-plugin/1.0/), so you do not need to use additional repositories.
