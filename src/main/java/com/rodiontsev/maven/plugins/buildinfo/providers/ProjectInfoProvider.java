@@ -36,8 +36,29 @@ public class ProjectInfoProvider implements InfoProvider {
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
         Map<String, String> info = new LinkedHashMap<String, String>();
-        info.put("project.name", project.getName());
-        info.put("project.version", project.getVersion());
+        info.put("project.id",            project.getId());
+        info.put("project.groupId",       project.getGroupId());
+        info.put("project.artifactId",    project.getArtifactId());
+        info.put("project.version",       project.getVersion());
+        info.put("project.name",          project.getName());
+        info.put("project.description",   project.getDescription());
+        info.put("project.modelVersion",  project.getModelVersion());
+        info.put("project.inceptionYear", project.getInceptionYear());
+        info.put("project.packaging",     project.getPackaging());
+        info.put("project.url",           project.getUrl());
+        final MavenProject parent = project.getParent();
+        if (parent != null) {
+            info.put("project.parent.id",            parent.getId());
+            info.put("project.parent.groupId",       parent.getGroupId());
+            info.put("project.parent.artifactId",    parent.getArtifactId());
+            info.put("project.parent.version",       parent.getVersion());
+            info.put("project.parent.name",          parent.getName());
+            info.put("project.parent.description",   parent.getDescription());
+            info.put("project.parent.modelVersion",  parent.getModelVersion());
+            info.put("project.parent.inceptionYear", parent.getInceptionYear());
+            info.put("project.parent.packaging",     parent.getPackaging());
+            info.put("project.parent.url",           parent.getUrl());
+        }
         info.put("build.time", DateFormatUtils.format(new Date(), "d MMMM yyyy, HH:mm:ss ZZ", Locale.ENGLISH));
         return info;
     }
