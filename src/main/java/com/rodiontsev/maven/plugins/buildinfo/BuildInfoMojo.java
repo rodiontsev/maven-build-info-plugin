@@ -83,12 +83,14 @@ public class BuildInfoMojo extends AbstractMojo {
             map.putAll(provider.getInfo(project, this));
         }
 
-        String file = project.getBuild().getDirectory() + File.separator + filename;
-
-        getLog().info("Writing to the file " + file);
+        File buildDir = new File(project.getBuild().getDirectory());
+        File file = new File(buildDir, filename);
 
         Writer out = null;
         try {
+            // we may not have target/ yet
+            buildDir.mkdir();
+            boolean created = file.createNewFile();
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 out.write(entry.getKey());
@@ -97,6 +99,7 @@ public class BuildInfoMojo extends AbstractMojo {
                 out.write("\n");
             }
             out.flush();
+            getLog().info(created ? "Created " : "Overwrote " + file.getAbsolutePath());
         } catch (IOException e) {
             getLog().warn(e.getMessage());
         } finally {
