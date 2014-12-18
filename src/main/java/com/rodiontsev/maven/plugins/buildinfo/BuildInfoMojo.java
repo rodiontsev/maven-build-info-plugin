@@ -70,6 +70,24 @@ public class BuildInfoMojo extends AbstractMojo {
     private List<String> systemProperties;
 
     /**
+     * Project properties which you would like to include in the generated file.
+     *
+     * project[.parent].id
+     * project[.parent].groupId
+     * project[.parent].artifactId
+     * project[.parent].version
+     * project[.parent].name
+     * project[.parent].description
+     * project[.parent].modelVersion
+     * project[.parent].inceptionYear
+     * project[.parent].packaging
+     * project[.parent].url
+     *
+     * @parameter
+     */
+    private List<String> projectProperties;
+
+    /**
      * Include info from VCS in the generated file
      *
      * @parameter default-value="true"
@@ -115,4 +133,7 @@ public class BuildInfoMojo extends AbstractMojo {
         return includeVcsInfo;
     }
 
+    public List<String> getProjectProperties() {
+        return projectProperties;
+    }
 }
