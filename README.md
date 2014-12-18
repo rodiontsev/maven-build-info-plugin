@@ -30,6 +30,18 @@ To use this plugin you should add it in your pom.xml
                 <version>1.0</version>
                 <configuration>
                     <filename>build.info</filename>
+                    <projectProperties>
+                        <projectProperty>project[.parent].id</projectProperty>
+                        <projectProperty>project[.parent].groupId</projectProperty>
+                        <projectProperty>project[.parent].artifactId</projectProperty>
+                        <projectProperty>project[.parent].version</projectProperty>
+                        <projectProperty>project[.parent].name</projectProperty>
+                        <projectProperty>project[.parent].description</projectProperty>
+                        <projectProperty>project[.parent].modelVersion</projectProperty>
+                        <projectProperty>project[.parent].inceptionYear</projectProperty>
+                        <projectProperty>project[.parent].packaging</projectProperty>
+                        <projectProperty>project[.parent].url</projectProperty>
+                    </projectProperties>
                     <systemProperties>
                         <systemProperty>user.name</systemProperty>
                         <systemProperty>user.timezone</systemProperty>
