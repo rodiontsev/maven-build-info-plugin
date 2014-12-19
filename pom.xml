@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>com.rodiontsev.maven.plugins</groupId>
-    <artifactId>maven-build-info-plugin</artifactId>
+    <artifactId>build-info-maven-plugin</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
