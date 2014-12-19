@@ -49,7 +49,7 @@ public class BuildInfoMojo extends AbstractMojo {
     /**
      * The Maven Project
      *
-     * @parameter expression="${project}"
+     * @parameter expression="project"
      * @readonly
      */
     private MavenProject project;
