@@ -35,10 +35,44 @@ import java.util.Map;
 public class ProjectInfoProvider implements InfoProvider {
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
+
+        // finite set of project properties we expose
+        final Map<String, String> props = new LinkedHashMap<String, String>(65);
+        props.put("project.id",            project.getId());
+        props.put("project.groupId",       project.getGroupId());
+        props.put("project.artifactId",    project.getArtifactId());
+        props.put("project.version",       project.getVersion());
+        props.put("project.name",          project.getName());
+        props.put("project.description",   project.getDescription());
+        props.put("project.modelVersion",  project.getModelVersion());
+        props.put("project.inceptionYear", project.getInceptionYear());
+        props.put("project.packaging",     project.getPackaging());
+        props.put("project.url",           project.getUrl());
+        final MavenProject parent = project.getParent();
+        if (parent != null) {
+            props.put("project.parent.id",            parent.getId());
+            props.put("project.parent.groupId",       parent.getGroupId());
+            props.put("project.parent.artifactId",    parent.getArtifactId());
+            props.put("project.parent.version",       parent.getVersion());
+            props.put("project.parent.name",          parent.getName());
+            props.put("project.parent.description",   parent.getDescription());
+            props.put("project.parent.modelVersion",  parent.getModelVersion());
+            props.put("project.parent.inceptionYear", parent.getInceptionYear());
+            props.put("project.parent.packaging",     parent.getPackaging());
+            props.put("project.parent.url",           parent.getUrl());
+        }
+
+        // properties the user wants
         Map<String, String> info = new LinkedHashMap<String, String>();
-        info.put("project.name", project.getName());
-        info.put("project.version", project.getVersion());
+
+        for(String propertyName : mojo.getProjectProperties()) {
+            String prop = props.get(propertyName);
+            if (prop != null) {
+                info.put(propertyName, prop);
+            }
+        }
         info.put("build.time", DateFormatUtils.format(new Date(), "d MMMM yyyy, HH:mm:ss ZZ", Locale.ENGLISH));
+
         return info;
     }
 

@@ -49,7 +49,7 @@ public class BuildInfoMojo extends AbstractMojo {
     /**
      * The Maven Project
      *
-     * @parameter expression="${project}"
+     * @parameter expression="project"
      * @readonly
      */
     private MavenProject project;
@@ -70,6 +70,24 @@ public class BuildInfoMojo extends AbstractMojo {
     private List<String> systemProperties;
 
     /**
+     * Project properties which you would like to include in the generated file.
+     *
+     * project[.parent].id
+     * project[.parent].groupId
+     * project[.parent].artifactId
+     * project[.parent].version
+     * project[.parent].name
+     * project[.parent].description
+     * project[.parent].modelVersion
+     * project[.parent].inceptionYear
+     * project[.parent].packaging
+     * project[.parent].url
+     *
+     * @parameter
+     */
+    private List<String> projectProperties;
+
+    /**
      * Include info from VCS in the generated file
      *
      * @parameter default-value="true"
@@ -83,12 +101,14 @@ public class BuildInfoMojo extends AbstractMojo {
             map.putAll(provider.getInfo(project, this));
         }
 
-        String file = project.getBuild().getDirectory() + File.separator + filename;
-
-        getLog().info("Writing to the file " + file);
+        File buildDir = new File(project.getBuild().getDirectory());
+        File file = new File(buildDir, filename);
 
         Writer out = null;
         try {
+            // we may not have target/ yet
+            buildDir.mkdir();
+            boolean created = file.createNewFile();
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 out.write(entry.getKey());
@@ -97,6 +117,7 @@ public class BuildInfoMojo extends AbstractMojo {
                 out.write("\n");
             }
             out.flush();
+            getLog().info(created ? "Created " : "Overwrote " + file.getAbsolutePath());
         } catch (IOException e) {
             getLog().warn(e.getMessage());
         } finally {
@@ -112,4 +133,7 @@ public class BuildInfoMojo extends AbstractMojo {
         return includeVcsInfo;
     }
 
+    public List<String> getProjectProperties() {
+        return projectProperties;
+    }
 }
