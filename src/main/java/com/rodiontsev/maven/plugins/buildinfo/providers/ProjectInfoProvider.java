@@ -65,10 +65,12 @@ public class ProjectInfoProvider implements InfoProvider {
         // properties the user wants
         Map<String, String> info = new LinkedHashMap<String, String>();
 
-        for(String propertyName : mojo.getProjectProperties()) {
-            String prop = props.get(propertyName);
-            if (prop != null) {
-                info.put(propertyName, prop);
+        if (mojo.getProjectProperties() != null) {
+            for (String propertyName : mojo.getProjectProperties()) {
+                String prop = props.get(propertyName);
+                if (prop != null) {
+                    info.put(propertyName, prop);
+                }
             }
         }
         info.put("build.time", DateFormatUtils.format(new Date(), "d MMMM yyyy, HH:mm:ss ZZ", Locale.ENGLISH));
