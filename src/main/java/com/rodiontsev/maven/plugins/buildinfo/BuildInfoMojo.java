@@ -69,6 +69,14 @@ public class BuildInfoMojo extends AbstractMojo {
      */
     private List<String> systemProperties;
 
+
+    /**
+     * Environment variables which you would like to include in the generated file
+     *
+     * @parameter
+     */
+    private List<String> environmentVariables;
+
     /**
      * Project properties which you would like to include in the generated file.
      *
@@ -128,6 +136,11 @@ public class BuildInfoMojo extends AbstractMojo {
     public List<String> getSystemProperties() {
         return systemProperties;
     }
+
+    public List<String> getEnvironmentVariables() {
+        return environmentVariables;
+    }
+
 
     public boolean isIncludeVcsInfo() {
         return includeVcsInfo;
