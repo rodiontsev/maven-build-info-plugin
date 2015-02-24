@@ -1,5 +1,6 @@
 com.rodiontsev.maven.plugins.buildinfo.providers.ProjectInfoProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.SystemPropertiesProvider
+com.rodiontsev.maven.plugins.buildinfo.providers.EnvironmentVariablesProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.GitInfoProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.MercurialInfoProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.SubversionInfoProvider
