@@ -63,22 +63,6 @@ public class BuildInfoMojo extends AbstractMojo {
     private String filename;
 
     /**
-     * System properties, like user.name, java.vm.vendor, java.vm.version, os.name, os.version, etc.,
-     * which you would like to include in the generated file
-     *
-     * @parameter
-     */
-    private List<String> systemProperties;
-
-
-    /**
-     * Environment variables which you would like to include in the generated file
-     *
-     * @parameter
-     */
-    private List<String> environmentVariables;
-
-    /**
      * Project properties which you would like to include in the generated file.
      *
      * project[.parent].id
@@ -95,6 +79,28 @@ public class BuildInfoMojo extends AbstractMojo {
      * @parameter
      */
     private List<String> projectProperties;
+
+    /**
+     * System properties, like user.name, java.vm.vendor, java.vm.version, os.name, os.version, etc.,
+     * which you would like to include in the generated file
+     *
+     * @parameter
+     */
+    private List<String> systemProperties;
+
+    /**
+     * Environment variables which you would like to include in the generated file
+     *
+     * @parameter
+     */
+    private List<String> environmentVariables;
+
+    /**
+     * The pattern to use to format the date
+     *
+     * @parameter default-value="d MMMM yyyy, HH:mm:ss ZZ"
+     */
+    private String dateTimePattern;
 
     /**
      * Include info from VCS in the generated file
@@ -140,6 +146,10 @@ public class BuildInfoMojo extends AbstractMojo {
         }
     }
 
+    public List<String> getProjectProperties() {
+        return projectProperties;
+    }
+
     public List<String> getSystemProperties() {
         return systemProperties;
     }
@@ -148,13 +158,12 @@ public class BuildInfoMojo extends AbstractMojo {
         return environmentVariables;
     }
 
+    public String getDateTimePattern() {
+        return dateTimePattern;
+    }
 
     public boolean isIncludeVcsInfo() {
         return includeVcsInfo;
-    }
-
-    public List<String> getProjectProperties() {
-        return projectProperties;
     }
 
 }

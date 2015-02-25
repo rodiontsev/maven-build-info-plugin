@@ -16,16 +16,13 @@ package com.rodiontsev.maven.plugins.buildinfo.providers;
 
 import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import com.rodiontsev.maven.plugins.buildinfo.InfoProvider;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.maven.project.MavenProject;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
- * Default InfoProvider.
+ * ProjectInfoProvider adds project's properties to the info file.
  *
  * Date: 6/22/11
  * Time: 11:21 PM
@@ -74,8 +71,6 @@ public class ProjectInfoProvider implements InfoProvider {
                 }
             }
         }
-
-        info.put("build.time", DateFormatUtils.format(new Date(), "d MMMM yyyy, HH:mm:ss ZZ", Locale.ENGLISH));
 
         return info;
     }
