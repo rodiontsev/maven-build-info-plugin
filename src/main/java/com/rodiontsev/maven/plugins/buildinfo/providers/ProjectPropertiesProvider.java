@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * ProjectInfoProvider adds project's properties to the info file.
+ * ProjectPropertiesProvider adds project's properties to the info file.
  *
  * Date: 6/22/11
  * Time: 11:21 PM
@@ -31,7 +31,7 @@ import java.util.Map;
  * @author <a href="https://github.com/vlfig">Vasco Figueira</a>
  * @author <a href="https://github.com/shendrix">Steve Hendrix</a>
  */
-public class ProjectInfoProvider implements InfoProvider {
+public class ProjectPropertiesProvider implements InfoProvider {
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
         Map<String, String> info = new LinkedHashMap<String, String>();
