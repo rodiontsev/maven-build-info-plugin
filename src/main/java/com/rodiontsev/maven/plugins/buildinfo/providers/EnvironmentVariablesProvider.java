@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * InfoProvider for environment variables
+ * InfoProvider for environment variables.
  *
  * @author <a href="https://github.com/shendrix">Steve Hendrix</a>
  */
@@ -31,16 +31,14 @@ public class EnvironmentVariablesProvider implements InfoProvider {
     private static final String DEFAULT_VALUE = "";
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
-
-
         Map<String, String> info = new LinkedHashMap<String, String>();
-        Map<String, String> env = System.getenv();
 
         List<String> properties = mojo.getEnvironmentVariables();
         if (properties != null) {
+            Map<String, String> env = System.getenv();
             for (String property : properties) {
-                String prop = env.get(property) != null ? env.get(property).toString() : DEFAULT_VALUE;
-                info.put(property,prop);
+                String prop = env.get(property) != null ? env.get(property) : DEFAULT_VALUE;
+                info.put(property, prop);
             }
         }
 

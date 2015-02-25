@@ -49,8 +49,9 @@ public class BuildInfoMojo extends AbstractMojo {
     /**
      * The Maven Project
      *
-     * @parameter expression="project"
+     * @parameter default-value="${project}"
      * @readonly
+     * @required
      */
     private MavenProject project;
 
@@ -115,8 +116,14 @@ public class BuildInfoMojo extends AbstractMojo {
         Writer out = null;
         try {
             // we may not have target/ yet
-            buildDir.mkdir();
-            boolean created = file.createNewFile();
+            if (!buildDir.exists()) {
+                boolean buildDirectoryCreated = buildDir.mkdir();
+                if (buildDirectoryCreated) {
+                    getLog().info("The build directory was created");
+                }
+            }
+
+            boolean infoFileCreated = file.createNewFile();
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 out.write(entry.getKey());
@@ -125,7 +132,7 @@ public class BuildInfoMojo extends AbstractMojo {
                 out.write("\n");
             }
             out.flush();
-            getLog().info(created ? "Created " : "Overwrote " + file.getAbsolutePath());
+            getLog().info(infoFileCreated ? "Created " : "Overwrote " + file.getAbsolutePath());
         } catch (IOException e) {
             getLog().warn(e.getMessage());
         } finally {
@@ -149,4 +156,5 @@ public class BuildInfoMojo extends AbstractMojo {
     public List<String> getProjectProperties() {
         return projectProperties;
     }
+
 }
