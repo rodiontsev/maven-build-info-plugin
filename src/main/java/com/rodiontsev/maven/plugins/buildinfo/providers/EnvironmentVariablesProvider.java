@@ -25,6 +25,7 @@ import java.util.Map;
 /**
  * InfoProvider for environment variables
  *
+ * @author <a href="https://github.com/shendrix">Steve Hendrix</a>
  */
 public class EnvironmentVariablesProvider implements InfoProvider {
     private static final String DEFAULT_VALUE = "";
