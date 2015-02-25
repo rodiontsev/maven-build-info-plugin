@@ -16,6 +16,8 @@ package com.rodiontsev.maven.plugins.buildinfo.providers;
 
 import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import com.rodiontsev.maven.plugins.buildinfo.InfoProvider;
+import com.rodiontsev.maven.plugins.buildinfo.utils.InfoWriter;
+import com.rodiontsev.maven.plugins.buildinfo.utils.PropertyMapper;
 import org.apache.maven.project.MavenProject;
 
 import java.util.LinkedHashMap;
@@ -34,43 +36,41 @@ import java.util.Map;
 public class ProjectPropertiesProvider implements InfoProvider {
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
+        // finite set of project properties we expose
+        final Map<String, String> projectProperties = new LinkedHashMap<String, String>(65);
+        projectProperties.put("project.id", project.getId());
+        projectProperties.put("project.groupId", project.getGroupId());
+        projectProperties.put("project.artifactId", project.getArtifactId());
+        projectProperties.put("project.version", project.getVersion());
+        projectProperties.put("project.name", project.getName());
+        projectProperties.put("project.description", project.getDescription());
+        projectProperties.put("project.modelVersion", project.getModelVersion());
+        projectProperties.put("project.inceptionYear", project.getInceptionYear());
+        projectProperties.put("project.packaging", project.getPackaging());
+        projectProperties.put("project.url", project.getUrl());
+
+        MavenProject parent = project.getParent();
+        if (parent != null) {
+            projectProperties.put("project.parent.id", parent.getId());
+            projectProperties.put("project.parent.groupId", parent.getGroupId());
+            projectProperties.put("project.parent.artifactId", parent.getArtifactId());
+            projectProperties.put("project.parent.version", parent.getVersion());
+            projectProperties.put("project.parent.name", parent.getName());
+            projectProperties.put("project.parent.description", parent.getDescription());
+            projectProperties.put("project.parent.modelVersion", parent.getModelVersion());
+            projectProperties.put("project.parent.inceptionYear", parent.getInceptionYear());
+            projectProperties.put("project.parent.packaging", parent.getPackaging());
+            projectProperties.put("project.parent.url", parent.getUrl());
+        }
+
         Map<String, String> info = new LinkedHashMap<String, String>();
 
-        if (mojo.getProjectProperties() != null) {
-            // finite set of project properties we expose
-            final Map<String, String> projectProperties = new LinkedHashMap<String, String>(65);
-            projectProperties.put("project.id", project.getId());
-            projectProperties.put("project.groupId", project.getGroupId());
-            projectProperties.put("project.artifactId", project.getArtifactId());
-            projectProperties.put("project.version", project.getVersion());
-            projectProperties.put("project.name", project.getName());
-            projectProperties.put("project.description", project.getDescription());
-            projectProperties.put("project.modelVersion", project.getModelVersion());
-            projectProperties.put("project.inceptionYear", project.getInceptionYear());
-            projectProperties.put("project.packaging", project.getPackaging());
-            projectProperties.put("project.url", project.getUrl());
-
-            final MavenProject parent = project.getParent();
-            if (parent != null) {
-                projectProperties.put("project.parent.id", parent.getId());
-                projectProperties.put("project.parent.groupId", parent.getGroupId());
-                projectProperties.put("project.parent.artifactId", parent.getArtifactId());
-                projectProperties.put("project.parent.version", parent.getVersion());
-                projectProperties.put("project.parent.name", parent.getName());
-                projectProperties.put("project.parent.description", parent.getDescription());
-                projectProperties.put("project.parent.modelVersion", parent.getModelVersion());
-                projectProperties.put("project.parent.inceptionYear", parent.getInceptionYear());
-                projectProperties.put("project.parent.packaging", parent.getPackaging());
-                projectProperties.put("project.parent.url", parent.getUrl());
+        new InfoWriter().write(info, mojo.getProjectProperties(), new PropertyMapper() {
+            @Override
+            public String mapProperty(String propertyName) {
+                return projectProperties.get(propertyName);
             }
-
-            for (String propertyName : mojo.getProjectProperties()) {
-                String propertyValue = projectProperties.get(propertyName);
-                if (propertyValue != null) {
-                    info.put(propertyName, propertyValue);
-                }
-            }
-        }
+        });
 
         return info;
     }

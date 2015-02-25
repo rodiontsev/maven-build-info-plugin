@@ -16,10 +16,11 @@ package com.rodiontsev.maven.plugins.buildinfo.providers;
 
 import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import com.rodiontsev.maven.plugins.buildinfo.InfoProvider;
+import com.rodiontsev.maven.plugins.buildinfo.utils.InfoWriter;
+import com.rodiontsev.maven.plugins.buildinfo.utils.PropertyMapper;
 import org.apache.maven.project.MavenProject;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,19 +29,18 @@ import java.util.Map;
  * @author <a href="https://github.com/shendrix">Steve Hendrix</a>
  */
 public class EnvironmentVariablesProvider implements InfoProvider {
-    private static final String DEFAULT_VALUE = "";
 
     public Map<String, String> getInfo(MavenProject project, BuildInfoMojo mojo) {
+        final Map<String, String> env = System.getenv();
+
         Map<String, String> info = new LinkedHashMap<String, String>();
 
-        List<String> properties = mojo.getEnvironmentVariables();
-        if (properties != null) {
-            Map<String, String> env = System.getenv();
-            for (String property : properties) {
-                String prop = env.get(property) != null ? env.get(property) : DEFAULT_VALUE;
-                info.put(property, prop);
+        new InfoWriter().write(info, mojo.getEnvironmentVariables(), new PropertyMapper() {
+            @Override
+            public String mapProperty(String propertyName) {
+                return env.get(propertyName);
             }
-        }
+        });
 
         return info;
     }
