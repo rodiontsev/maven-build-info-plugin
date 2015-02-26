@@ -17,9 +17,10 @@ package com.rodiontsev.maven.plugins.buildinfo.providers;
 import com.rodiontsev.maven.plugins.buildinfo.BuildInfoMojo;
 import com.rodiontsev.maven.plugins.buildinfo.InfoProvider;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.maven.project.MavenProject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -41,7 +42,16 @@ public class BuildTimeProvider implements InfoProvider {
 
         String dateTimePattern = mojo.getDateTimePattern();
         if (StringUtils.isNotBlank(dateTimePattern)) {
-            info.put("build.time", DateFormatUtils.format(new Date(), dateTimePattern, Locale.ENGLISH));
+            String buildTime;
+            try {
+                DateFormat dateFormat = new SimpleDateFormat(dateTimePattern, Locale.ENGLISH);
+                buildTime = dateFormat.format(new Date());
+            } catch (IllegalArgumentException e) {
+                buildTime = "the given pattern is invalid";
+                mojo.getLog().warn(String.format("The given date-time pattern '%s' is invalid. Please read %s javadoc about user-defined patterns for date-time formatting.",
+                        dateTimePattern, SimpleDateFormat.class.getCanonicalName()));
+            }
+            info.put("build.time", buildTime);
         }
 
         return info;
