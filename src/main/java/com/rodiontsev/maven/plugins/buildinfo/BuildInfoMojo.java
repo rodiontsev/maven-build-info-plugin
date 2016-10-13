@@ -11,7 +11,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.rodiontsev.maven.plugins.buildinfo;
 
 import org.apache.commons.io.IOUtils;
@@ -81,6 +80,13 @@ public class BuildInfoMojo extends AbstractMojo {
     private List<String> projectProperties;
 
     /**
+     * Properties declared within the project itself
+     *
+     * @parameter
+     */
+    private List<String> declaredProperties;
+
+    /**
      * System properties, like user.name, java.vm.vendor, java.vm.version, os.name, os.version, etc.,
      * which you would like to include in the generated file
      *
@@ -108,6 +114,7 @@ public class BuildInfoMojo extends AbstractMojo {
      * @parameter default-value="true"
      */
     private boolean includeVcsInfo;
+
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         Map<String, String> map = new LinkedHashMap<String, String>();
@@ -150,6 +157,10 @@ public class BuildInfoMojo extends AbstractMojo {
         return projectProperties;
     }
 
+    public List<String> getDeclaredProperties() {
+        return declaredProperties;
+    }
+
     public List<String> getSystemProperties() {
         return systemProperties;
     }
@@ -165,5 +176,4 @@ public class BuildInfoMojo extends AbstractMojo {
     public boolean isIncludeVcsInfo() {
         return includeVcsInfo;
     }
-
 }
