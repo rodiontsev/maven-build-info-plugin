@@ -1,3 +1,4 @@
+com.rodiontsev.maven.plugins.buildinfo.providers.DeclaredPropertiesProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.ProjectPropertiesProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.SystemPropertiesProvider
 com.rodiontsev.maven.plugins.buildinfo.providers.EnvironmentVariablesProvider
