@@ -5,6 +5,7 @@ This plugin generates the build-info file which might contain:
 - build date
 - project properties (project.artifactId, project.version, project.name, etc.)
 - system properties (user.name, java.vm.vendor, java.vm.version, java.vm.name, os.name, os.version, os.arch, etc.)
+- properties defined in a pom.xml
 - environment variables (SHELL, HOME, PATH, LANG, etc)
 - VCS info (Git, Mercurial or Subversion)
 
@@ -28,7 +29,7 @@ To use this plugin you should add it in your pom.xml
             <plugin>
                 <groupId>com.rodiontsev.maven.plugins</groupId>
                 <artifactId>build-info-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <configuration>
                     <filename>build.info</filename>
                     <projectProperties>
@@ -94,4 +95,4 @@ To use this plugin you should add it in your pom.xml
 </project>
 ```
 
-The Build Info Maven Plugin can be downloaded from the [Maven Central](http://repo1.maven.org/maven2/com/rodiontsev/maven/plugins/build-info-maven-plugin/1.1/) repository.
+The Build Info Maven Plugin can be downloaded from the [Maven Central](http://repo1.maven.org/maven2/com/rodiontsev/maven/plugins/build-info-maven-plugin/1.2/) repository.
