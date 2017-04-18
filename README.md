@@ -21,10 +21,10 @@ To use this plugin you should add it in your pom.xml
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     ...
-	
-	<properties>
-	    <user.defined.property>Hello World!</user.defined.property>
-	</properties>
+
+    <properties>
+        <user.defined.property>Hello World!</user.defined.property>
+    </properties>
 
     <build>
         <plugins>
@@ -59,9 +59,9 @@ To use this plugin you should add it in your pom.xml
                         <systemProperty>os.version</systemProperty>
                         <systemProperty>os.arch</systemProperty>
                     </systemProperties>
-					<declaredProperties>
-					    <declaredProperty>user.defined.property</declaredProperty>
-					</declaredProperties>
+                    <declaredProperties>
+                        <declaredProperty>user.defined.property</declaredProperty>
+                    </declaredProperties>
                     <environmentVariables>
                         <environmentVariable>JAVA_HOME</environmentVariable>
                     </environmentVariables>
