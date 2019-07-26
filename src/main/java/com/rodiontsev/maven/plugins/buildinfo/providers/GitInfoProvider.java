@@ -84,9 +84,6 @@ public class GitInfoProvider extends AbstractVcsInfoProvider {
                     if (items.get(0).getLastChangedDate() != null) {
                         info.put("git.lastChangedDate", items.get(0).getLastChangedDate());
                     }
-                    if (items.get(0).getLastChangedAuthor() != null) {
-                        info.put("git.lastChangedDate", items.get(0).getLastChangedAuthor());
-                    }
                     if (items.get(0).getLastChangedRevision() != null) {
                         info.put("git.lastChangedRevision", items.get(0).getLastChangedRevision());
                     }

@@ -20,12 +20,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,14 +163,9 @@ public class BuildInfoMojo extends AbstractMojo {
     }
 
     private File getBuildDir() {
-        if (StringUtils.isNotBlank(fileDir)) {
-            getLog().info("Build Dir: " + fileDir);
-            return new File(fileDir);
-        } else {
-            final String directory = project.getBuild().getDirectory();
-            getLog().info("Build Dir: " + directory);
-            return new File(directory);
-        }
+        final String directory = StringUtils.isNotBlank(fileDir) ? fileDir : project.getBuild().getDirectory();
+        getLog().info("Build Dir: " + directory);
+        return new File(directory);
     }
 
     public List<String> getProjectProperties() {
@@ -201,4 +191,5 @@ public class BuildInfoMojo extends AbstractMojo {
     public boolean isIncludeVcsInfo() {
         return includeVcsInfo;
     }
+
 }
