@@ -33,7 +33,7 @@ To use this plugin you should add it in your pom.xml
             <plugin>
                 <groupId>com.rodiontsev.maven.plugins</groupId>
                 <artifactId>build-info-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>1.3</version>
                 <configuration>
                     <filename>build.info</filename>
                     <projectProperties>
@@ -102,4 +102,4 @@ To use this plugin you should add it in your pom.xml
 </project>
 ```
 
-The Build Info Maven Plugin can be downloaded from the [Maven Central](http://repo1.maven.org/maven2/com/rodiontsev/maven/plugins/build-info-maven-plugin/1.2/) repository.
+The Build Info Maven Plugin can be downloaded from the [Maven Central](http://repo1.maven.org/maven2/com/rodiontsev/maven/plugins/build-info-maven-plugin/1.3/) repository.
