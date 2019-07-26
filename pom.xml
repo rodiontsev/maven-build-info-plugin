@@ -10,7 +10,7 @@
 
     <groupId>com.rodiontsev.maven.plugins</groupId>
     <artifactId>build-info-maven-plugin</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3</version>
     <packaging>maven-plugin</packaging>
 
     <name>Build Info Maven Plugin</name>
