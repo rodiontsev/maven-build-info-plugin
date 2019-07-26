@@ -14,12 +14,18 @@
 package com.rodiontsev.maven.plugins.buildinfo;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +66,13 @@ public class BuildInfoMojo extends AbstractMojo {
      * @parameter default-value="build.info"
      */
     private String filename;
+
+    /**
+     * The name of the directory
+     *
+     * @parameter default-value=""
+     */
+    private String fileDir;
 
     /**
      * Project properties which you would like to include in the generated file.
@@ -123,7 +136,8 @@ public class BuildInfoMojo extends AbstractMojo {
             map.putAll(provider.getInfo(project, this));
         }
 
-        File buildDir = new File(project.getBuild().getDirectory());
+        File buildDir = getBuildDir();
+
         File file = new File(buildDir, filename);
 
         Writer out = null;
@@ -150,6 +164,17 @@ public class BuildInfoMojo extends AbstractMojo {
             getLog().warn(e.getMessage());
         } finally {
             IOUtils.closeQuietly(out);
+        }
+    }
+
+    private File getBuildDir() {
+        if (StringUtils.isNotBlank(fileDir)) {
+            getLog().info("Build Dir: " + fileDir);
+            return new File(fileDir);
+        } else {
+            final String directory = project.getBuild().getDirectory();
+            getLog().info("Build Dir: " + directory);
+            return new File(directory);
         }
     }
 
