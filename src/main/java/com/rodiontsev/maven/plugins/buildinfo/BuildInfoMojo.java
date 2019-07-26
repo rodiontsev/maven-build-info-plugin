@@ -14,6 +14,7 @@
 package com.rodiontsev.maven.plugins.buildinfo;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -60,6 +61,13 @@ public class BuildInfoMojo extends AbstractMojo {
      * @parameter default-value="build.info"
      */
     private String filename;
+
+    /**
+     * The name of the directory
+     *
+     * @parameter default-value=""
+     */
+    private String fileDir;
 
     /**
      * Project properties which you would like to include in the generated file.
@@ -123,7 +131,8 @@ public class BuildInfoMojo extends AbstractMojo {
             map.putAll(provider.getInfo(project, this));
         }
 
-        File buildDir = new File(project.getBuild().getDirectory());
+        File buildDir = getBuildDir();
+
         File file = new File(buildDir, filename);
 
         Writer out = null;
@@ -153,6 +162,12 @@ public class BuildInfoMojo extends AbstractMojo {
         }
     }
 
+    private File getBuildDir() {
+        final String directory = StringUtils.isNotBlank(fileDir) ? fileDir : project.getBuild().getDirectory();
+        getLog().info("Build Dir: " + directory);
+        return new File(directory);
+    }
+
     public List<String> getProjectProperties() {
         return projectProperties;
     }
@@ -176,4 +191,5 @@ public class BuildInfoMojo extends AbstractMojo {
     public boolean isIncludeVcsInfo() {
         return includeVcsInfo;
     }
+
 }

@@ -78,6 +78,18 @@ public class GitInfoProvider extends AbstractVcsInfoProvider {
                 List<InfoItem> items = infoResult.getInfoItems();
                 if ((items != null) && (items.size() == 1)) {
                     info.put("git.revision", items.get(0).getRevision());
+                    if (items.get(0).getLastChangedAuthor() != null) {
+                        info.put("git.lastChangedAuthor", items.get(0).getLastChangedAuthor());
+                    }
+                    if (items.get(0).getLastChangedDate() != null) {
+                        info.put("git.lastChangedDate", items.get(0).getLastChangedDate());
+                    }
+                    if (items.get(0).getLastChangedRevision() != null) {
+                        info.put("git.lastChangedRevision", items.get(0).getLastChangedRevision());
+                    }
+                    if (items.get(0).getURL() != null) {
+                        info.put("git.url", items.get(0).getURL());
+                    }
                 } else {
                     info.put("git.error", "The command returned incorrect number of arguments");
                 }
